@@ -1,10 +1,10 @@
-# Leaf's To Do List App
+# Jessica Roy's To Do List App
 
 ## Steps I took to create this
 
 1. I cloned the repo provided for the exercise, removed .git to detach it from the MassMutual repo, renamed the folder, re-initialized git to connect it to a repo of my own. 
 
-2. I installed react into a separate scratch space by doing `npx create-react-app` and then removing all the files in src as described here:
+2. I installed ReactJS into a separate scratch space by doing `npx create-react-app` and then removing all the files in src as described here:
 https://reactjs.org/tutorial/tutorial.html#setup-option-2-local-development-environment
 
 3. I replaced those default files with the starter files that came with the project.
@@ -23,10 +23,6 @@ are in the same local directory. With the file open in your browser, you should 
 
 [script.js](/script.js) is where most of your work will be done. There is some starter code for you in the file. The `classNames` variable can be used to link any elements you create in js with the associated CSS class names. The next 3 lines of code are the HTML elements that you'll need to update when creating new
 TODOs. Lastly, you'll see the `addTodo()` function. This gets executed when creating a new TODO. You should replace the `alert()` call with logic to create new TODOs.
-Reminder: The above work needs to be done using ReactJS
-
-
-Good luck!
 
 ## Challenge! (Not Required)
 If you finish early and are up for a challenge, try adding delete functionality. This should be in the form of a button within each TODO that removes that TODO when clicked.
