@@ -17,16 +17,37 @@ class ItemCount extends React.Component {
 
 class UncheckedCount extends React.Component {
   render() {
-    return <span>Unchecked count: 321</span>;
+    return <span>
+      <span className="glyphicon glyphicon-envelope"></span>
+      Unchecked count: {this.props.count}</span>;
   }
 }
 
-class AddButton extends React.Component {
+class AddNewItem extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {value: ''}
+  }
+  handleChange(event){
+    this.setState({value: event.target.value});
+  }
+  handleSubmit(event){
+    event.preventDefault();
+    this.props.click(this.state.value);
+    this.setState({value: ''});
+  }
   render() {
     return (
-      <button className="button center" onClick={() => this.props.click()}>
-        New TODO
-      </button>
+      <form
+        className="form-inline mt-4"
+        onSubmit={(event) => this.handleSubmit(event)}>
+        <input
+          type="text"
+          className="form-control mb-2 mr-sm-2"
+          id="newTodoName"
+          value={this.state.value} onChange={(event) => this.handleChange(event)}/>
+        <button type="submit" className="btn btn-primary mb-2">Add New ToDo</button>
+      </form>
     );
   }
 }
@@ -43,9 +64,9 @@ class MainList extends React.Component {
       <ul className="todo-list">
         {this.props.items.map(item => (
           <ListItem 
-            className={TODO_ITEM}
             key={item.id}
             item={item}
+            clickToggle={(id) => this.toggleItem(id)}
             clickDelete={(id) => this.deleteItem(id)}
           />
         ))}  
@@ -55,18 +76,25 @@ class MainList extends React.Component {
 };
 
 class ListItem extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      editing: false
+    }
+  }
   render() {
     return (
-      <span>
-        <span className={TODO_TEXT}>{this.props.item.name}</span>
-        <span>{this.props.item.done ? ' -- Complete!' : ''}</span>
-        <button onClick={() => this.props.clickToggle(this.props.item.id)}>
-          {this.props.item.done ? 'Re-open' : 'Complete'}
-        </button>
-        <button onClick={() => this.props.clickDelete(this.props.item.id)}>
-          Delete
-        </button>
-      </span>
+      <li className={classNames.TODO_ITEM}>
+        <i className={this.props.item.done ?
+          'fas fa-check todo-icon todo-green' :
+          'fas fa-check todo-icon todo-gray'}
+          onClick={() => this.props.clickToggle(this.props.item.id)}>
+        </i>
+        <span className={classNames.TODO_TEXT}>{this.props.item.name}</span>
+        <i className="fas fa-times todo-icon todo-delete"
+          onClick={() => this.props.clickDelete(this.props.item.id)}>
+        </i>
+      </li>
     );
   }
 }
@@ -78,10 +106,10 @@ class Main extends React.Component {
       myList: []
     }
   }
-  addNew() {
+  addNew(text) {    
     const list = [...this.state.myList, 
       {
-        name: 'New item',
+        name: text || 'New item',
         id: this.state.myList.length,
         done: false
       }
@@ -100,10 +128,10 @@ class Main extends React.Component {
     return (
       <>
         <div className="flow-right controls">
-          <ItemCount count={myItems.length} />
-          <UncheckedCount />
+          <ItemCount count={this.state.myList.length} />
+          <UncheckedCount count={this.state.myList.filter(item => !item.done).length} />
         </div>
-        <AddButton click={() => this.addNew()} />
+        <AddNewItem click={(e) => this.addNew(e)} />
         <MainList 
           items={this.state.myList}
           delete={(id) => this.deleteItem(id)}
@@ -113,6 +141,4 @@ class Main extends React.Component {
   }
 }
 
-const root = document.getElementById('root');
-
-ReactDOM.render(<Main />, root);
+ReactDOM.render(<Main />, document.getElementById('root'));
