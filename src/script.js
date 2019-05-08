@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './styles.css';
+import uuid from 'uuid';
 
 const classNames = {
   TODO_ITEM: 'todo-container',
@@ -110,7 +111,7 @@ class Main extends React.Component {
     const list = [...this.state.myList, 
       {
         name: text || 'New item',
-        id: this.state.myList.length,
+        id: uuid(),
         done: false
       }
     ];
